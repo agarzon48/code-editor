@@ -1,0 +1,10 @@
+.editor-title {
+  background-color: #282c34;
+  color: var(--red);
+}
+
+.editor-title h2 {
+  margin: 0;
+  padding: 0.5rem;
+  border-bottom: solid 1px var(--red);
+}
