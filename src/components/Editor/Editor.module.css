@@ -1,10 +1,34 @@
+.editor {
+  flex-grow: 1;
+  border-right: 1px solid var(--red);
+  height: 548px;
+}
+
 .editor-title {
   background-color: #282c34;
   color: var(--red);
+  border-bottom: double 3px var(--red);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .editor-title h2 {
   margin: 0;
   padding: 0.5rem;
-  border-bottom: solid 1px var(--red);
+}
+
+.closed {
+  background-color: #282c34;
+  width: 2rem;
+  border-right: 1px solid var(--red);
+  height: 546px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 2px;
+}
+
+.logo {
+  cursor: pointer;
+  margin-bottom: 1rem;
 }

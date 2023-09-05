@@ -9,12 +9,19 @@ import {
 
 import { javascript } from "@codemirror/lang-javascript";
 
+import jsLogo from "../assets/imgs/JS-logo.webp";
+
 const defaultContext = {
   lang: javascript({ jsx: true }),
   title: "JavaScript",
   value: "",
+  logo: jsLogo,
+  open: true,
+  id: "js",
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleUserInput: (_value: string, _viewUpdate: object) => {},
+  closeEditor: () => {},
+  openEditor: () => {},
 };
 
 const JSContext = createContext(defaultContext);
@@ -22,6 +29,15 @@ const JSContext = createContext(defaultContext);
 export const JSContextProvider = ({ children }: ContextType) => {
   const [value, setValue] = useState("");
   const [lastUpdate, setLastUpdate] = useState({});
+  const [open, setOpen] = useState(true);
+
+  const closeEditor = useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  const openEditor = useCallback(() => {
+    setOpen(true);
+  }, []);
 
   const handleUserInput = useCallback((value: string, viewUpdate: object) => {
     setValue(value);
@@ -29,8 +45,16 @@ export const JSContextProvider = ({ children }: ContextType) => {
   }, []);
 
   const memoedValue = useMemo(
-    () => ({ ...defaultContext, value, handleUserInput, lastUpdate }),
-    [value, lastUpdate, handleUserInput]
+    () => ({
+      ...defaultContext,
+      value,
+      open,
+      closeEditor,
+      openEditor,
+      handleUserInput,
+      lastUpdate,
+    }),
+    [value, open, closeEditor, openEditor, handleUserInput, lastUpdate]
   );
 
   return (

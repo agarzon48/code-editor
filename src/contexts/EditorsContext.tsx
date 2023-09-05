@@ -6,17 +6,15 @@ import { CSSContextProvider } from "./CSSContext";
 
 const EditorsContext = createContext(null);
 
-export const EditorsContextProvider = ({ children }: ContextType) => {
-  return (
-    <EditorsContext.Provider value={null}>
-      <JSContextProvider>
-        <HTMLContextProvider>
-          <CSSContextProvider>{children}</CSSContextProvider>
-        </HTMLContextProvider>
-      </JSContextProvider>
-    </EditorsContext.Provider>
-  );
-};
+export const EditorsContextProvider = ({ children }: ContextType) => (
+  <EditorsContext.Provider value={null}>
+    <JSContextProvider>
+      <HTMLContextProvider>
+        <CSSContextProvider>{children}</CSSContextProvider>
+      </HTMLContextProvider>
+    </JSContextProvider>
+  </EditorsContext.Provider>
+);
 
 const useEditorsContext = () => useContext(EditorsContext);
 

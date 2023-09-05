@@ -9,12 +9,19 @@ import {
 
 import { css } from "@codemirror/lang-css";
 
+import cssLogo from "../assets/imgs/CSS-logo.webp";
+
 const defaultContext = {
   lang: css(),
   title: "CSS",
   value: "",
+  logo: cssLogo,
+  open: true,
+  id: "css",
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleUserInput: (_value: string, _viewUpdate: object) => {},
+  closeEditor: () => {},
+  openEditor: () => {},
 };
 
 const CSSContext = createContext(defaultContext);
@@ -22,15 +29,32 @@ const CSSContext = createContext(defaultContext);
 export const CSSContextProvider = ({ children }: ContextType) => {
   const [value, setValue] = useState("");
   const [lastUpdate, setLastUpdate] = useState({});
+  const [open, setOpen] = useState(true);
 
   const handleUserInput = useCallback((value: string, viewUpdate: object) => {
     setValue(value);
     setLastUpdate(viewUpdate);
   }, []);
 
+  const closeEditor = useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  const openEditor = useCallback(() => {
+    setOpen(true);
+  }, []);
+
   const memoedValue = useMemo(
-    () => ({ ...defaultContext, value, handleUserInput, lastUpdate }),
-    [value, lastUpdate, handleUserInput]
+    () => ({
+      ...defaultContext,
+      value,
+      open,
+      closeEditor,
+      openEditor,
+      handleUserInput,
+      lastUpdate,
+    }),
+    [value, open, closeEditor, openEditor, handleUserInput, lastUpdate]
   );
 
   return (

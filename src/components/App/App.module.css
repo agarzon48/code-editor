@@ -1,3 +1,26 @@
+.editors-section {
+  display: flex;
+  width: 100%;
+}
+
 .preview-section {
   height: 100%;
+}
+
+.closed {
+  background-color: #282c34;
+  width: 3rem;
+  border-right: 1px solid var(--red);
+  height: 546px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 2px;
+}
+
+.closed p {
+  margin: 0;
+  padding: 0.5rem;
+  color: var(--red);
+  font-weight: bold;
+  cursor: pointer;
 }

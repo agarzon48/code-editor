@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 import Editor from "../Editor";
 import useCSSContext from "../../contexts/CSSContext";
@@ -12,6 +12,16 @@ function App() {
   const CSSCtx = useCSSContext();
   const JSCtx = useJSContext();
   const [srcDoc, setSrcDoc] = useState("");
+
+  const closedEditors = useMemo(
+    () => [HTMLCtx, CSSCtx, JSCtx].filter((ctx) => !ctx.open),
+    [HTMLCtx, CSSCtx, JSCtx]
+  );
+
+  const canCloseEditors = useMemo(
+    () => closedEditors.length !== 2,
+    [closedEditors]
+  );
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -27,13 +37,24 @@ function App() {
     return () => clearTimeout(timeout);
   }, [HTMLCtx.value, CSSCtx.value, JSCtx.value]);
 
-  console.log("render");
   return (
     <>
       <div className={classes["editors-section"]}>
-        <Editor ctx={HTMLCtx} />
-        <Editor ctx={CSSCtx} />
-        <Editor ctx={JSCtx} />
+        <Editor canCloseEditors={canCloseEditors} ctx={HTMLCtx} />
+        <Editor canCloseEditors={canCloseEditors} ctx={CSSCtx} />
+        <Editor canCloseEditors={canCloseEditors} ctx={JSCtx} />
+        {Boolean(closedEditors?.length) && (
+          <div className={classes.closed}>
+            {closedEditors.map((editor) => {
+              console.log(editor);
+              return (
+                <p key={editor.id} onClick={editor.openEditor}>
+                  {editor.id.toUpperCase()}
+                </p>
+              );
+            })}
+          </div>
+        )}
       </div>
       <div className={classes["preview-section"]}>
         <iframe
