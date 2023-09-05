@@ -27,7 +27,10 @@ function App() {
     const timeout = setTimeout(() => {
       setSrcDoc(`
       <html>
-        <body>${HTMLCtx.value}</body>
+        <body>
+        ${HTMLCtx.value}
+        <div id="console">Console:</div>
+        </body>
         <style>${CSSCtx.value}</style>
         <script>${JSCtx.value}</script>
       </html>
@@ -45,14 +48,11 @@ function App() {
         <Editor canCloseEditors={canCloseEditors} ctx={JSCtx} />
         {Boolean(closedEditors?.length) && (
           <div className={classes.closed}>
-            {closedEditors.map((editor) => {
-              console.log(editor);
-              return (
-                <p key={editor.id} onClick={editor.openEditor}>
-                  {editor.id.toUpperCase()}
-                </p>
-              );
-            })}
+            {closedEditors.map((editor) => (
+              <p key={editor.id} onClick={editor.openEditor}>
+                {editor.id.toUpperCase()}
+              </p>
+            ))}
           </div>
         )}
       </div>
