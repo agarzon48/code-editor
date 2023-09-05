@@ -43,7 +43,7 @@ type EditorProps = {
     handleUserInput: (value: string, viewUpdate: object) => void;
     lang: Extension;
     logo: string;
-    closeEditor: () => null;
+    closeEditor: () => void;
     open: boolean;
   };
   canCloseEditors: boolean;

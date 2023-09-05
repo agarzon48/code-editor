@@ -21,7 +21,7 @@ const ToggleIcon = ({ onClose, open }: ToggleIconProps) => {
 };
 
 type ToggleIconProps = {
-  onClose: () => null;
+  onClose: () => void;
   open: boolean;
 };
 
