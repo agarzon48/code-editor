@@ -10,6 +10,7 @@ import {
 import { javascript } from "@codemirror/lang-javascript";
 
 import useLocalStorage from "../hooks/useLocalStorage";
+import generateFile from "./utils/generateFile";
 
 import jsLogo from "../assets/imgs/JS-logo.webp";
 
@@ -24,6 +25,7 @@ const defaultContext = {
   handleUserInput: (_value: string, _viewUpdate: object) => {},
   closeEditor: () => {},
   openEditor: () => {},
+  downloadFile: () => {},
 };
 
 const JSContext = createContext(defaultContext);
@@ -51,6 +53,10 @@ export const JSContextProvider = ({ children }: ContextType) => {
     [setLSValue]
   );
 
+  const downloadFile = useCallback(() => {
+    generateFile({ format: "js", content: value, name: "scripts" });
+  }, [value]);
+
   const memoedValue = useMemo(
     () => ({
       ...defaultContext,
@@ -60,8 +66,17 @@ export const JSContextProvider = ({ children }: ContextType) => {
       openEditor,
       handleUserInput,
       lastUpdate,
+      downloadFile,
     }),
-    [value, open, closeEditor, openEditor, handleUserInput, lastUpdate]
+    [
+      value,
+      open,
+      closeEditor,
+      openEditor,
+      handleUserInput,
+      lastUpdate,
+      downloadFile,
+    ]
   );
 
   return (

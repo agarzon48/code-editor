@@ -3,11 +3,12 @@ import { Extension } from "@codemirror/state";
 import { oneDark } from "@codemirror/theme-one-dark";
 
 import ToggleIcon from "./components/ToggleIcon";
+import DownloadIcon from "./components/DownloadIcon";
 
 import classes from "./Editor.module.css";
 
 export default function Editor({ ctx, canCloseEditors }: EditorProps) {
-  const { handleUserInput, closeEditor, open } = ctx;
+  const { handleUserInput, closeEditor, open, downloadFile } = ctx;
 
   if (!open) {
     return null;
@@ -17,6 +18,7 @@ export default function Editor({ ctx, canCloseEditors }: EditorProps) {
     <div className={classes.editor}>
       <div className={classes["editor-title"]}>
         <h2>{ctx.title}</h2>
+        <DownloadIcon onDownload={downloadFile} open={open} />
         {canCloseEditors && (
           <ToggleIcon
             onClose={canCloseEditors ? closeEditor : () => {}}
@@ -44,6 +46,7 @@ type EditorProps = {
     lang: Extension;
     logo: string;
     closeEditor: () => void;
+    downloadFile: () => void;
     open: boolean;
   };
   canCloseEditors: boolean;

@@ -9,7 +9,9 @@ import {
 
 import { html } from "@codemirror/lang-html";
 
+import { htmlHeadInit, htmlHeadEnd } from "./utils/htmlHead";
 import useLocalStorage from "../hooks/useLocalStorage";
+import generateHTMLFile from "./utils/generateHTMLFile";
 
 import htmlLogo from "../assets/imgs/HTML-logo.webp";
 
@@ -20,10 +22,14 @@ const defaultContext = {
   logo: htmlLogo,
   open: true,
   id: "html",
+  head: "",
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleUserInput: (_value: string, _viewUpdate: object) => {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  insertHTMLHead: (_customHeadString: string) => {},
   closeEditor: () => {},
   openEditor: () => {},
+  downloadFile: () => {},
 };
 
 const HTMLContext = createContext(defaultContext);
@@ -33,6 +39,7 @@ export const HTMLContextProvider = ({ children }: ContextType) => {
   const [open, setOpen] = useState(true);
   const [LSValue, setLSValue] = useLocalStorage({ tag: "html" });
   const [value, setValue] = useState(LSValue);
+  const [head, setHead] = useState(htmlHeadInit + htmlHeadEnd);
 
   const closeEditor = useCallback(() => {
     setOpen(false);
@@ -51,6 +58,18 @@ export const HTMLContextProvider = ({ children }: ContextType) => {
     [setLSValue]
   );
 
+  const downloadFile = useCallback(() => {
+    generateHTMLFile({
+      head,
+      value,
+      name: "index",
+    });
+  }, [value, head]);
+
+  const insertHTMLHead = useCallback((customHeadString: string) => {
+    setHead(htmlHeadInit + customHeadString + htmlHeadEnd);
+  }, []);
+
   const memoedValue = useMemo(
     () => ({
       ...defaultContext,
@@ -60,8 +79,21 @@ export const HTMLContextProvider = ({ children }: ContextType) => {
       value,
       handleUserInput,
       lastUpdate,
+      downloadFile,
+      insertHTMLHead,
+      head,
     }),
-    [open, closeEditor, openEditor, value, handleUserInput, lastUpdate]
+    [
+      open,
+      closeEditor,
+      openEditor,
+      value,
+      handleUserInput,
+      lastUpdate,
+      downloadFile,
+      insertHTMLHead,
+      head,
+    ]
   );
 
   return (

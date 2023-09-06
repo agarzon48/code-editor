@@ -10,6 +10,7 @@ import {
 import { css } from "@codemirror/lang-css";
 
 import useLocalStorage from "../hooks/useLocalStorage";
+import generateFile from "./utils/generateFile";
 
 import cssLogo from "../assets/imgs/CSS-logo.webp";
 
@@ -24,6 +25,7 @@ const defaultContext = {
   handleUserInput: (_value: string, _viewUpdate: object) => {},
   closeEditor: () => {},
   openEditor: () => {},
+  downloadFile: () => {},
 };
 
 const CSSContext = createContext(defaultContext);
@@ -51,6 +53,10 @@ export const CSSContextProvider = ({ children }: ContextType) => {
     setOpen(true);
   }, []);
 
+  const downloadFile = useCallback(() => {
+    generateFile({ format: "css", content: value, name: "styles" });
+  }, [value]);
+
   const memoedValue = useMemo(
     () => ({
       ...defaultContext,
@@ -60,8 +66,17 @@ export const CSSContextProvider = ({ children }: ContextType) => {
       openEditor,
       handleUserInput,
       lastUpdate,
+      downloadFile,
     }),
-    [value, open, closeEditor, openEditor, handleUserInput, lastUpdate]
+    [
+      value,
+      open,
+      closeEditor,
+      openEditor,
+      handleUserInput,
+      downloadFile,
+      lastUpdate,
+    ]
   );
 
   return (

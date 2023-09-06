@@ -27,7 +27,9 @@ function App() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setSrcDoc(`
+      <!DOCTYPE html>
       <html>
+        <head>${HTMLCtx.head}</head>
         <body>${HTMLCtx.value}</body>
         <style>${CSSCtx.value}</style>
         <script>${JSCtx.value}</script>
@@ -36,7 +38,7 @@ function App() {
     }, 1000);
 
     return () => clearTimeout(timeout);
-  }, [HTMLCtx.value, CSSCtx.value, JSCtx.value]);
+  }, [HTMLCtx.value, HTMLCtx.head, CSSCtx.value, JSCtx.value]);
 
   return (
     <>
