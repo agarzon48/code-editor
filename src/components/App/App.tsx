@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 
+import Corporative from "../Corporative";
 import Editor from "../Editor";
 import useCSSContext from "../../contexts/CSSContext";
 import useHTMLContext from "../../contexts/HTMLContext";
@@ -39,6 +40,7 @@ function App() {
 
   return (
     <>
+      <Corporative />
       <div className={classes["editors-section"]}>
         <Editor canCloseEditors={canCloseEditors} ctx={HTMLCtx} />
         <Editor canCloseEditors={canCloseEditors} ctx={CSSCtx} />
