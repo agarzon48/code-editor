@@ -27,10 +27,7 @@ function App() {
     const timeout = setTimeout(() => {
       setSrcDoc(`
       <html>
-        <body>
-        ${HTMLCtx.value}
-        <div id="console">Console:</div>
-        </body>
+        <body>${HTMLCtx.value}</body>
         <style>${CSSCtx.value}</style>
         <script>${JSCtx.value}</script>
       </html>

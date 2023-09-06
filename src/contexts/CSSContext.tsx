@@ -9,6 +9,8 @@ import {
 
 import { css } from "@codemirror/lang-css";
 
+import useLocalStorage from "../hooks/useLocalStorage";
+
 import cssLogo from "../assets/imgs/CSS-logo.webp";
 
 const defaultContext = {
@@ -27,14 +29,19 @@ const defaultContext = {
 const CSSContext = createContext(defaultContext);
 
 export const CSSContextProvider = ({ children }: ContextType) => {
-  const [value, setValue] = useState("");
   const [lastUpdate, setLastUpdate] = useState({});
   const [open, setOpen] = useState(true);
+  const [LSValue, setLSValue] = useLocalStorage({ tag: "css" });
+  const [value, setValue] = useState(LSValue);
 
-  const handleUserInput = useCallback((value: string, viewUpdate: object) => {
-    setValue(value);
-    setLastUpdate(viewUpdate);
-  }, []);
+  const handleUserInput = useCallback(
+    (value: string, viewUpdate: object) => {
+      setValue(value);
+      setLastUpdate(viewUpdate);
+      setLSValue(value);
+    },
+    [setLSValue]
+  );
 
   const closeEditor = useCallback(() => {
     setOpen(false);

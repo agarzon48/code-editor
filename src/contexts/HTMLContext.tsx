@@ -9,6 +9,8 @@ import {
 
 import { html } from "@codemirror/lang-html";
 
+import useLocalStorage from "../hooks/useLocalStorage";
+
 import htmlLogo from "../assets/imgs/HTML-logo.webp";
 
 const defaultContext = {
@@ -27,9 +29,10 @@ const defaultContext = {
 const HTMLContext = createContext(defaultContext);
 
 export const HTMLContextProvider = ({ children }: ContextType) => {
-  const [value, setValue] = useState("");
   const [lastUpdate, setLastUpdate] = useState({});
   const [open, setOpen] = useState(true);
+  const [LSValue, setLSValue] = useLocalStorage({ tag: "html" });
+  const [value, setValue] = useState(LSValue);
 
   const closeEditor = useCallback(() => {
     setOpen(false);
@@ -39,10 +42,14 @@ export const HTMLContextProvider = ({ children }: ContextType) => {
     setOpen(true);
   }, []);
 
-  const handleUserInput = useCallback((value: string, viewUpdate: object) => {
-    setValue(value);
-    setLastUpdate(viewUpdate);
-  }, []);
+  const handleUserInput = useCallback(
+    (value: string, viewUpdate: object) => {
+      setValue(value);
+      setLastUpdate(viewUpdate);
+      setLSValue(value);
+    },
+    [setLSValue]
+  );
 
   const memoedValue = useMemo(
     () => ({
